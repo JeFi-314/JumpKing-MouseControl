@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using JumpKing;
 using Microsoft.Xna.Framework.Input;
@@ -63,6 +64,18 @@ public class Preferences : INotifyPropertyChanged
         set
         {
             _sideRatio = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private int _cursorScale = 1;
+    public int CursorScale
+    {
+        get => _cursorScale;
+        set
+        {
+            CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
+            _cursorScale = value;
             OnPropertyChanged();
         }
     }

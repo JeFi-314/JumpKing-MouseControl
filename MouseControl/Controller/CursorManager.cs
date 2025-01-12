@@ -5,8 +5,8 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System;
 using System.IO;
-using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Xna.Framework;
 
 
 namespace MouseControl.Controller;
@@ -38,7 +38,6 @@ public static class CursorManager
 	public static void SetVisible(bool value) {
 		Game1.instance.IsMouseVisible = value;
 	}
-
 	public static bool SetCursor(string name, bool force=false) {
 		if (!force && currentIcon==name) return true;
 		if (CustomIcons.ContainsKey(name)) {
@@ -53,7 +52,6 @@ public static class CursorManager
 		}
 		return false;
 	}
-
 	public static void AddTexture(string name, Texture2D texture, int x, int y) {
 		CustomIcons[name] = MouseCursor.FromTexture2D(
 			texture: texture,
@@ -80,7 +78,8 @@ public static class CursorManager
 				if (File.Exists(filePath))
 				{
 					Texture2D texture = contentManager.Load<Texture2D>(Path.Combine(folder, icon.Key));
-
+					Debug.WriteLine($"[DEBUG] Loaded texture \"{icon.Key}\": ({texture.Width},{texture.Height}), SurfaceFormat: {(int)texture.Format}");
+					texture = ResizeTexture(texture, ModEntry.Prefs.CursorScale);
 					int centerX = texture.Width / 2;
 					int centerY = texture.Height / 2;
 
@@ -93,11 +92,47 @@ public static class CursorManager
 			}
 			catch (Exception ex)
 			{
-				Debug.WriteLine($"[DEBUG] Error loading texture '{icon.Key}': {ex.Message}");
+				Debug.WriteLine($"[DEBUG] Error loading texture '{icon.Key}': {ex}");
 			}
 		}
 	}
+	public static Texture2D ResizeTexture(Texture2D original, int scale)
+	{
+		if (scale <= 0 || scale >10)
+			throw new ArgumentException("Scale must be 1~10.");
 
+		Color[] originalData = new Color[original.Width * original.Height];
+		original.GetData(originalData);
+
+		int newWidth = original.Width * scale;
+		int newHeight = original.Height * scale;
+
+		Texture2D resizedTexture = new Texture2D(Game1.instance.GraphicsDevice, newWidth, newHeight);
+
+		Color[] resizedData = new Color[newWidth * newHeight];
+
+		for (int y = 0; y < original.Height; y++)
+		{
+			for (int x = 0; x < original.Width; x++)
+			{
+				Color originalColor = originalData[y * original.Width + x];
+
+				for (int dy = 0; dy < scale; dy++)
+				{
+					for (int dx = 0; dx < scale; dx++)
+					{
+						int newX = x * scale + dx;
+						int newY = y * scale + dy;
+						resizedData[newY * newWidth + newX] = originalColor;
+					}
+				}
+			}
+		}
+
+		resizedTexture.SetData(resizedData);
+
+		return resizedTexture;
+	}
     public static void SetClipCursor(bool value)
     {
         if (value && !isClipped) {
@@ -124,7 +159,7 @@ public static class CursorManager
 
         Cursor.Clip = drawingBounds;
 
-        Debug.WriteLine($"[DEBUG] Window bounds: ({drawingBounds.X}, {drawingBounds.Y})~({drawingBounds.X+drawingBounds.Width}, {drawingBounds.Y+drawingBounds.Height})");
+        Debug.WriteLine($"[DEBUG] Window bounds: ({drawingBounds.X},{drawingBounds.Y})~({drawingBounds.X+drawingBounds.Width},{drawingBounds.Y+drawingBounds.Height})");
     }
     public static void onWindowFocusGained(object sender, EventArgs e)
     {

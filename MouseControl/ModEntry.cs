@@ -18,9 +18,9 @@ public static class ModEntry
     const string IDENTIFIER = "JeFi.MouseControl";
     const string HARMONY_IDENTIFIER = "JeFi.MouseControl.Harmony";
     const string SETTINGS_FILE = "JeFi.MouseControl.Preferences.xml";
-    const string ICON_FOLDER = "icons";
 
     public static string AssemblyPath { get; set; }
+    public static string IconsFolder = "icons";
     public static Preferences Prefs { get; private set; }
 
     /// <summary>
@@ -48,7 +48,7 @@ public static class ModEntry
         Prefs.PropertyChanged += SaveSettingsOnFile;
         Prefs.SideRatio = Prefs.SideRatio;
 
-        CursorManager.TryLoadTexture(Path.Combine(AssemblyPath, ICON_FOLDER));
+        CursorManager.TryLoadTexture(Path.Combine(AssemblyPath, IconsFolder));
         CursorManager.SetVisible(ModEntry.Prefs.isEnable && ModEntry.Prefs.isShowCursor);
 		CursorManager.SetClipCursor(ModEntry.Prefs.isEnable && ModEntry.Prefs.isClipCursor);
 		CursorManager.SetCursor("Normal", force: true);
@@ -112,9 +112,16 @@ public static class ModEntry
     {
         return new SliderSideRatio();
     }
+
+    [MainMenuItemSetting]
+    [PauseMenuItemSetting]
+    public static SliderCursorScale SliderCursorScale(object factory, GuiFormat format)
+    {
+        return new SliderCursorScale();
+    }
     #endregion
 
-        private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
+    private static void SaveSettingsOnFile(object sender, System.ComponentModel.PropertyChangedEventArgs args)
     {
         try
         {
@@ -122,7 +129,7 @@ public static class ModEntry
         }
         catch (Exception e)
         {
-            Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
+            Debug.WriteLine($"[DEBUG] [{IDENTIFIER}] {e.Message}");
         }
     }
 }

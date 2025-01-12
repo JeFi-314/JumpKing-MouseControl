@@ -16,7 +16,7 @@ public static class CursorManager
 	private static string currentIcon;
 	private static readonly Dictionary<string, MouseCursor> DefaultIcons;
 	private static readonly Dictionary<string, MouseCursor> CustomIcons;
-	private static bool isCliped;
+	private static bool isClipped;
 	static CursorManager() {
 		currentIcon = "normal";
 		DefaultIcons = new Dictionary<string, MouseCursor>
@@ -31,6 +31,8 @@ public static class CursorManager
             {"RightJump", MouseCursor.Wait }
         };
 		CustomIcons = new Dictionary<string, MouseCursor>();
+
+		Game1.instance.Activated += onWindowFocusGained;
 	}
 
 	public static void SetVisible(bool value) {
@@ -98,21 +100,20 @@ public static class CursorManager
 
     public static void SetClipCursor(bool value)
     {
-        if (value && !isCliped) {
+        if (value && !isClipped) {
 			onWindowSizeChange(null, EventArgs.Empty);
 			Game1.instance.Window.ClientSizeChanged += onWindowSizeChange;
-			isCliped = true;
+			isClipped = true;
 			Debug.WriteLine($"[DEBUG] Cursor clipped)");
         }
-        else if (!value && isCliped)
+        else if (!value && isClipped)
         {
 			Cursor.Clip = System.Drawing.Rectangle.Empty;
 			Game1.instance.Window.ClientSizeChanged -= onWindowSizeChange;
-			isCliped = false;
+			isClipped = false;
 			Debug.WriteLine($"[DEBUG] Cursor unclipped)");
         }
     }
-
     public static void onWindowSizeChange(object sender, EventArgs e)
     {
         var bound = Game1.instance.Window.ClientBounds;
@@ -124,5 +125,12 @@ public static class CursorManager
         Cursor.Clip = drawingBounds;
 
         Debug.WriteLine($"[DEBUG] Window bounds: ({drawingBounds.X}, {drawingBounds.Y})~({drawingBounds.X+drawingBounds.Width}, {drawingBounds.Y+drawingBounds.Height})");
+    }
+    public static void onWindowFocusGained(object sender, EventArgs e)
+    {
+		if (isClipped) {
+			SetClipCursor(false);
+			SetClipCursor(true);
+		}
     }
 }

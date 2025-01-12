@@ -7,7 +7,7 @@ public class ToggleClipCursor : ITextToggle
     {
     }
 
-    protected override string GetName() => "Clip Cursor";
+    protected override string GetName() => "Bound Cursor";
 
     protected override void OnToggle()
     {

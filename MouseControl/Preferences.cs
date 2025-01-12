@@ -13,7 +13,8 @@ public class Preferences : INotifyPropertyChanged
         get => _enable;
         set
         {
-            MouseIcon.SetVisible(value && isShowCursor);
+            CursorManager.SetVisible(value && isShowCursor);
+            CursorManager.SetClipCursor(value && isClipCursor);
             _enable = value;
             OnPropertyChanged();
         }
@@ -25,8 +26,20 @@ public class Preferences : INotifyPropertyChanged
         get => _showCursor;
         set
         {
-            MouseIcon.SetVisible(value);
+            CursorManager.SetVisible(value);
             _showCursor = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool _clipCursor = true;
+    public bool isClipCursor
+    {
+        get => _clipCursor;
+        set
+        {
+            CursorManager.SetClipCursor(value);
+            _clipCursor = value;
             OnPropertyChanged();
         }
     }
@@ -37,7 +50,7 @@ public class Preferences : INotifyPropertyChanged
         get => _RLControl;
         set
         {
-            if (!value) MouseIcon.SetCursor("Normal");
+            if (!value) CursorManager.SetCursor("Normal");
             _RLControl = value;
             OnPropertyChanged();
         }

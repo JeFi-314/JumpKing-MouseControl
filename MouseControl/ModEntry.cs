@@ -31,10 +31,10 @@ public static class ModEntry
     {
         AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #if DEBUG
-        // Debugger.Launch();
-        // Debug.WriteLine("------");
-        // Harmony.DEBUG = true;
-        // Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
+        Debugger.Launch();
+        Debug.WriteLine("------");
+        Harmony.DEBUG = true;
+        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
 #endif
         try
         {
@@ -48,7 +48,10 @@ public static class ModEntry
         Prefs.PropertyChanged += SaveSettingsOnFile;
         Prefs.SideRatio = Prefs.SideRatio;
 
-        MouseIcon.TryLoadTexture(Path.Combine(AssemblyPath, ICON_FOLDER));
+        CursorManager.TryLoadTexture(Path.Combine(AssemblyPath, ICON_FOLDER));
+        CursorManager.SetVisible(ModEntry.Prefs.isEnable && ModEntry.Prefs.isShowCursor);
+		CursorManager.SetClipCursor(ModEntry.Prefs.isEnable && ModEntry.Prefs.isClipCursor);
+		CursorManager.SetCursor("Normal", force: true);
 
         Harmony harmony = new Harmony(HARMONY_IDENTIFIER);
 
@@ -84,9 +87,16 @@ public static class ModEntry
 
     [MainMenuItemSetting]
     [PauseMenuItemSetting]
-    public static ToggleShowCursor ToggleHideCursor(object factory, GuiFormat format)
+    public static ToggleShowCursor ToggleShowCursor(object factory, GuiFormat format)
     {
         return new ToggleShowCursor();
+    }
+
+    [MainMenuItemSetting]
+    [PauseMenuItemSetting]
+    public static ToggleClipCursor ToggleClipCursor(object factory, GuiFormat format)
+    {
+        return new ToggleClipCursor();
     }
 
     [MainMenuItemSetting]

@@ -17,8 +17,6 @@ public static class MousePad
 
 	static MousePad() {
 		RegisterSteamCallback();
-		MouseIcon.SetVisible(ModEntry.Prefs.isEnable && ModEntry.Prefs.isShowCursor);
-		MouseIcon.SetCursor("Normal", force: true);
 		lastWheelValue = Mouse.GetState().ScrollWheelValue;
 		pressed = new bool[6];
 		currentState = lastState = default;
@@ -75,35 +73,35 @@ public static class MousePad
 			if (result.jump) {
 				if (mouse.X<=leftBound) {
 					result.left = true;
-					MouseIcon.SetCursor("LeftJump");
+					CursorManager.SetCursor("LeftJump");
 				} else if (mouse.X<=rightBound) {
-					MouseIcon.SetCursor("NormalJump");
+					CursorManager.SetCursor("NormalJump");
 				} else {
 					result.right = true;
-					MouseIcon.SetCursor("RightJump");
+					CursorManager.SetCursor("RightJump");
 				}
 			} else if (pressed[(int)binding.walk]) {
 				if (mouse.X<=leftBound) {
 					result.left = true;
-					MouseIcon.SetCursor("LeftWalk");
+					CursorManager.SetCursor("LeftWalk");
 				} else if (mouse.X<=rightBound) {
-					MouseIcon.SetCursor("Normal");
+					CursorManager.SetCursor("Normal");
 				} else {
 					result.right = true;
-					MouseIcon.SetCursor("RightWalk");
+					CursorManager.SetCursor("RightWalk");
 				}
 			} else {
 				if (mouse.X<=leftBound) {
-					MouseIcon.SetCursor("Left");
+					CursorManager.SetCursor("Left");
 				} else if (mouse.X<=rightBound) {
-					MouseIcon.SetCursor("Normal");
+					CursorManager.SetCursor("Normal");
 				} else {
-					MouseIcon.SetCursor("Right");
+					CursorManager.SetCursor("Right");
 				}
 			}
 		} else {
-			if (result.jump) MouseIcon.SetCursor("NormalJump");
-			else MouseIcon.SetCursor("Normal");
+			if (result.jump) CursorManager.SetCursor("NormalJump");
+			else CursorManager.SetCursor("Normal");
 		}
 
 		return result;

@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using HarmonyLib;
 using JumpKing;
@@ -9,7 +10,7 @@ namespace MouseControl.Menu;
 public class SliderSideRatio : ISlider
 {
     const int steps = 16;
-    public SliderSideRatio() : base((ModEntry.Pref.SideRatio-0.1f)/0.8f)
+    public SliderSideRatio() : base((ModEntry.Prefs.SideRatio-0.1f)/0.8f)
     {
         FieldInfo STEPS = AccessTools.Field(typeof(ISlider), "STEPS");
         STEPS.SetValue(this, steps);
@@ -28,13 +29,13 @@ public class SliderSideRatio : ISlider
         new_x = x + offset.X + 5;
         Game1.spriteBatch.DrawString(
             font,
-            (10+(int)(80*p_value)).ToString()+"%",
+            (10 + (int)Math.Round(80 * p_value)).ToString()+"%",
             new Vector2(new_x + 65, y - offset.Y / 4),
             Color.White);
     }
 
     protected override void OnSliderChange(float p_value)
     {
-        ModEntry.Pref.SideRatio = 0.1f+0.8f*p_value;
+        ModEntry.Prefs.SideRatio = 0.1f+0.8f*p_value;
     }
 }

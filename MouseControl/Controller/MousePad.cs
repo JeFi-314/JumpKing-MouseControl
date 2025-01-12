@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace MouseControl.Controller;
 
-static class MousePad
+public static class MousePad
 {
 	private static Binding binding;
 	private static PadState currentState;
@@ -17,8 +17,8 @@ static class MousePad
 
 	static MousePad() {
 		RegisterSteamCallback();
-		Game1.instance.IsMouseVisible = true;
-		Mouse.SetCursor(MouseCursor.Crosshair);
+		MouseIcon.SetVisible(ModEntry.Prefs.isEnable && ModEntry.Prefs.isShowCursor);
+		MouseIcon.SetCursor("Normal", force: true);
 		lastWheelValue = Mouse.GetState().ScrollWheelValue;
 		pressed = new bool[6];
 		currentState = lastState = default;
@@ -28,7 +28,6 @@ static class MousePad
 	{
 		return p_button.ToString();
 	}
-
 	public static Binding GetDefaultBind()
 	{
 		return new Binding {
@@ -44,22 +43,11 @@ static class MousePad
 	}
 	private static PadState GetPadState()
 	{
-		if (!ModEntry.Pref.isEnable || steam_overlay_active || !Game1.instance.IsActive)
+		if (!ModEntry.Prefs.isEnable || steam_overlay_active || !Game1.instance.IsActive)
 		{
 			return default;
 		}
 		MouseState mouse = Mouse.GetState();
-		Rectangle gameRect = Game1.instance.GetGameRect();
-		int leftBound = gameRect.X+(int)(gameRect.Width*ModEntry.Pref.SideRatio/2);
-		int rightBound = gameRect.X+(int)(gameRect.Width*(1-ModEntry.Pref.SideRatio/2));
-		if (ModEntry.Pref.isControlDirection) {
-			if (mouse.X<=leftBound) 
-				Mouse.SetCursor(MouseCursor.SizeNWSE);
-			else if (mouse.X<=rightBound)
-				Mouse.SetCursor(MouseCursor.Crosshair);
-			else
-				Mouse.SetCursor(MouseCursor.SizeNESW);
-		}
 
 		pressed[0] = false;
 		pressed[1] = mouse.LeftButton == ButtonState.Pressed;
@@ -73,19 +61,50 @@ static class MousePad
 		else if (mouse.ScrollWheelValue<lastWheelValue) result.down = true;
 		lastWheelValue = mouse.ScrollWheelValue;
 		if (pressed[(int)binding.jump]) result.jump = true;
-		if (ModEntry.Pref.isControlDirection
-		&& (pressed[(int)binding.walk] || result.jump)) {
-			if (mouse.X<=leftBound) 
-				result.left = true;
-			else if (rightBound<mouse.X)
-				result.right = true;
-		}
 		if (pressed[(int)binding.pause]) result.pause = true;
 		if (pressed[(int)binding.confirm]) result.confirm = true;
 		if (pressed[(int)binding.cancel]) result.cancel = true;
 		if (pressed[(int)binding.boots]) result.boots = true;
 		if (pressed[(int)binding.snake]) result.snake = true;
 		if (pressed[(int)binding.restart]) result.restart = true;
+
+		Rectangle gameRect = Game1.instance.GetGameRect();
+		int leftBound = gameRect.X+(int)(gameRect.Width*ModEntry.Prefs.SideRatio/2);
+		int rightBound = gameRect.X+(int)(gameRect.Width*(1-ModEntry.Prefs.SideRatio/2));
+		if (ModEntry.Prefs.isRLControl) {
+			if (result.jump) {
+				if (mouse.X<=leftBound) {
+					result.left = true;
+					MouseIcon.SetCursor("LeftJump");
+				} else if (mouse.X<=rightBound) {
+					MouseIcon.SetCursor("NormalJump");
+				} else {
+					result.right = true;
+					MouseIcon.SetCursor("RightJump");
+				}
+			} else if (pressed[(int)binding.walk]) {
+				if (mouse.X<=leftBound) {
+					result.left = true;
+					MouseIcon.SetCursor("LeftWalk");
+				} else if (mouse.X<=rightBound) {
+					MouseIcon.SetCursor("Normal");
+				} else {
+					result.right = true;
+					MouseIcon.SetCursor("RightWalk");
+				}
+			} else {
+				if (mouse.X<=leftBound) {
+					MouseIcon.SetCursor("Left");
+				} else if (mouse.X<=rightBound) {
+					MouseIcon.SetCursor("Normal");
+				} else {
+					MouseIcon.SetCursor("Right");
+				}
+			}
+		} else {
+			if (result.jump) MouseIcon.SetCursor("NormalJump");
+			else MouseIcon.SetCursor("Normal");
+		}
 
 		return result;
 	}
@@ -97,12 +116,12 @@ static class MousePad
 	}
 	public static PadState GetState()
 	{
-		if (!ModEntry.Pref.isEnable) return default;
+		if (!ModEntry.Prefs.isEnable) return default;
 		return currentState;
 	}
 	public static PadState GetPressed()
 	{
-		if (!ModEntry.Pref.isEnable) return default;
+		if (!ModEntry.Prefs.isEnable) return default;
 		PadState result = new PadState();
 		result.up = !lastState.up && currentState.up;
 		result.down = !lastState.down && currentState.down;

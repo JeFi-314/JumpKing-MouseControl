@@ -9,21 +9,19 @@ using JumpKing.Mods;
 using JumpKing.PauseMenu;
 using JumpKing.Controller;
 using MouseControl.Menu;
-
-// using MouseControl.Menu;
+using MouseControl.Controller;
 
 namespace MouseControl;
 [JumpKingMod(IDENTIFIER)]
 public static class ModEntry
 {
-    public static int OffsetX {get; private set; }
-    public static int OffsetY {get; private set; }
     const string IDENTIFIER = "JeFi.MouseControl";
     const string HARMONY_IDENTIFIER = "JeFi.MouseControl.Harmony";
     const string SETTINGS_FILE = "JeFi.MouseControl.Preferences.xml";
+    const string ICON_FOLDER = "icons";
 
     public static string AssemblyPath { get; set; }
-    public static Preferences Pref { get; private set; }
+    public static Preferences Prefs { get; private set; }
 
     /// <summary>
     /// Called by Jump King before the level loads
@@ -33,22 +31,24 @@ public static class ModEntry
     {
         AssemblyPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #if DEBUG
-        Debugger.Launch();
-        Debug.WriteLine("------");
-        Harmony.DEBUG = true;
-        Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
+        // Debugger.Launch();
+        // Debug.WriteLine("------");
+        // Harmony.DEBUG = true;
+        // Environment.SetEnvironmentVariable("HARMONY_LOG_FILE", $@"{AssemblyPath}\harmony.log.txt");
 #endif
         try
         {
-            Pref = XmlSerializerHelper.Deserialize<Preferences>($@"{AssemblyPath}\{SETTINGS_FILE}");
+            Prefs = XmlSerializerHelper.Deserialize<Preferences>($@"{AssemblyPath}\{SETTINGS_FILE}");
         }
         catch (Exception e)
         {
             Debug.WriteLine($"[ERROR] [{IDENTIFIER}] {e.Message}");
-            Pref = new Preferences();
+            Prefs = new Preferences();
         }
-        Pref.PropertyChanged += SaveSettingsOnFile;
-        Pref.SideRatio = Pref.SideRatio;
+        Prefs.PropertyChanged += SaveSettingsOnFile;
+        Prefs.SideRatio = Prefs.SideRatio;
+
+        MouseIcon.TryLoadTexture(Path.Combine(AssemblyPath, ICON_FOLDER));
 
         Harmony harmony = new Harmony(HARMONY_IDENTIFIER);
 
@@ -84,6 +84,13 @@ public static class ModEntry
 
     [MainMenuItemSetting]
     [PauseMenuItemSetting]
+    public static ToggleShowCursor ToggleHideCursor(object factory, GuiFormat format)
+    {
+        return new ToggleShowCursor();
+    }
+
+    [MainMenuItemSetting]
+    [PauseMenuItemSetting]
     public static ToggleControlDirection ToggleControlDirection(object factory, GuiFormat format)
     {
         return new ToggleControlDirection();
@@ -101,7 +108,7 @@ public static class ModEntry
     {
         try
         {
-            XmlSerializerHelper.Serialize($@"{AssemblyPath}\{SETTINGS_FILE}", Pref);
+            XmlSerializerHelper.Serialize($@"{AssemblyPath}\{SETTINGS_FILE}", Prefs);
         }
         catch (Exception e)
         {

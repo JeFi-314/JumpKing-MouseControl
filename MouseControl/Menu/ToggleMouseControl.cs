@@ -3,7 +3,7 @@
 namespace MouseControl.Menu;
 public class ToggleMouseControl : ITextToggle
 {
-    public ToggleMouseControl() : base(ModEntry.Pref.isEnable)
+    public ToggleMouseControl() : base(ModEntry.Prefs.isEnable)
     {
     }
 
@@ -11,6 +11,6 @@ public class ToggleMouseControl : ITextToggle
 
     protected override void OnToggle()
     {
-        ModEntry.Pref.isEnable = toggle;
+        ModEntry.Prefs.isEnable = toggle;
     }
 }

@@ -2,6 +2,7 @@
 using System.Runtime.CompilerServices;
 using JumpKing;
 using Microsoft.Xna.Framework.Input;
+using MouseControl.Controller;
 
 namespace MouseControl;
 public class Preferences : INotifyPropertyChanged
@@ -12,23 +13,37 @@ public class Preferences : INotifyPropertyChanged
         get => _enable;
         set
         {
-            Game1.instance.IsMouseVisible = _enable = value;
-            OnPropertyChanged();
-        }
-    }
-    private bool _controlDirection = false;
-    public bool isControlDirection
-    {
-        get => _controlDirection;
-        set
-        {
-            if (!value) Mouse.SetCursor(MouseCursor.Crosshair);
-            _controlDirection = value;
+            MouseIcon.SetVisible(value && isShowCursor);
+            _enable = value;
             OnPropertyChanged();
         }
     }
 
-    private float _sideRatio = 0;
+    private bool _showCursor = true;
+    public bool isShowCursor
+    {
+        get => _showCursor;
+        set
+        {
+            MouseIcon.SetVisible(value);
+            _showCursor = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private bool _RLControl = true;
+    public bool isRLControl
+    {
+        get => _RLControl;
+        set
+        {
+            if (!value) MouseIcon.SetCursor("Normal");
+            _RLControl = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private float _sideRatio = 0.75f;
     public float SideRatio
     {
         get => _sideRatio;

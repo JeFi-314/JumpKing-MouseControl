@@ -1,17 +1,17 @@
 ﻿using JumpKing.PauseMenu.BT.Actions;
 
 namespace MouseControl.Menu;
-public class ToggleControlDirection : ITextToggle
+public class ToggleShowCursor : ITextToggle
 {
-    public ToggleControlDirection() : base(ModEntry.Prefs.isRLControl)
+    public ToggleShowCursor() : base(ModEntry.Prefs.isShowCursor)
     {
     }
 
-    protected override string GetName() => "Enable R/L Control";
+    protected override string GetName() => "Show Cursor";
 
     protected override void OnToggle()
     {
-        ModEntry.Prefs.isRLControl = toggle;
+        ModEntry.Prefs.isShowCursor = toggle;
     }
 
     protected override bool CanChange()

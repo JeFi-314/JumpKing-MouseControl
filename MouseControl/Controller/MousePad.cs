@@ -34,8 +34,8 @@ public static class MousePad
 			pause = MouseButtons.MiddleButton,
 			confirm = MouseButtons.LeftButton,
 			cancel = MouseButtons.RightButton,
-			boots = MouseButtons.XButton1,
-			snake = MouseButtons.XButton2,
+			snake = MouseButtons.XButton1,
+			boots = MouseButtons.XButton2,
 			restart = MouseButtons.None,
 		};
 	}

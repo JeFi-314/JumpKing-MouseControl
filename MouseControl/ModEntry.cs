@@ -48,7 +48,7 @@ public static class ModEntry
         Prefs.SideRatio = Prefs.SideRatio;
 
         CursorManager.SetVisible(Prefs.isEnable && Prefs.isShowCursor);
-		CursorManager.SetBoundCursor(Prefs.isEnable && Prefs.isClipCursor);
+		CursorManager.SetBoundCursor(Prefs.isEnable && Prefs.isBoundCursor);
         CursorManager.TryLoadTexture(Path.Combine(AssemblyPath, IconsFolder));
 		CursorManager.SetCursor("Normal", force: true);
 
@@ -93,9 +93,9 @@ public static class ModEntry
 
     [MainMenuItemSetting]
     [PauseMenuItemSetting]
-    public static ToggleClipCursor ToggleClipCursor(object factory, GuiFormat format)
+    public static ToggleBoundCursor ToggleClipCursor(object factory, GuiFormat format)
     {
-        return new ToggleClipCursor();
+        return new ToggleBoundCursor();
     }
 
     [MainMenuItemSetting]

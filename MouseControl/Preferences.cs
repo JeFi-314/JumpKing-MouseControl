@@ -26,13 +26,13 @@ public class Preferences : INotifyPropertyChanged
         }
     }
 
-    private bool _clipCursor = true;
-    public bool isClipCursor
+    private bool _boundCursor = true;
+    public bool isBoundCursor
     {
-        get => _clipCursor;
+        get => _boundCursor;
         set
         {
-            _clipCursor = value;
+            _boundCursor = value;
             OnPropertyChanged();
         }
     }

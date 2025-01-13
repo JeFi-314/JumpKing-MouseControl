@@ -15,7 +15,9 @@ public class ToggleMouseControl : ITextToggle
     {
         ModEntry.Prefs.isEnable = toggle;
         CursorManager.SetVisible(toggle && ModEntry.Prefs.isShowCursor);
-        CursorManager.SetBoundCursor(toggle && ModEntry.Prefs.isClipCursor);
-        CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
+        CursorManager.SetBoundCursor(toggle && ModEntry.Prefs.isBoundCursor);
+        if (toggle) {
+            CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
+        }
     }
 }

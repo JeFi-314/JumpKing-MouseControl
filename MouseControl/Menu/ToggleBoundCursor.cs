@@ -2,9 +2,9 @@
 using MouseControl.Controller;
 
 namespace MouseControl.Menu;
-public class ToggleClipCursor : ITextToggle
+public class ToggleBoundCursor : ITextToggle
 {
-    public ToggleClipCursor() : base(ModEntry.Prefs.isClipCursor)
+    public ToggleBoundCursor() : base(ModEntry.Prefs.isBoundCursor)
     {
     }
 
@@ -12,7 +12,7 @@ public class ToggleClipCursor : ITextToggle
 
     protected override void OnToggle()
     {
-        ModEntry.Prefs.isClipCursor = toggle;
+        ModEntry.Prefs.isBoundCursor = toggle;
         CursorManager.SetBoundCursor(toggle);
     }
 

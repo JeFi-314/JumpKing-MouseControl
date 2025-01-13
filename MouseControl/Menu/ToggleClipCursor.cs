@@ -1,4 +1,5 @@
 ﻿using JumpKing.PauseMenu.BT.Actions;
+using MouseControl.Controller;
 
 namespace MouseControl.Menu;
 public class ToggleClipCursor : ITextToggle
@@ -12,6 +13,7 @@ public class ToggleClipCursor : ITextToggle
     protected override void OnToggle()
     {
         ModEntry.Prefs.isClipCursor = toggle;
+        CursorManager.SetBoundCursor(toggle);
     }
 
     protected override bool CanChange()

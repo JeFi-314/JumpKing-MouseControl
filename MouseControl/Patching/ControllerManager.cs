@@ -32,14 +32,20 @@ public class ControllerManager {
     }
 
     private static void preUpdate() {
-        MousePad.Update();
+        if (ModEntry.Prefs.isEnable) {
+            MousePad.Update();
+        }
     }
 
     private static void postGetPadState(JK.ControllerManager __instance, ref PadState __result) {
-        __result = Traverse.Create(__instance).Method("Combine", new PadState[] {__result, MousePad.GetState()}).GetValue<PadState>();
+        if (ModEntry.Prefs.isEnable) {
+            __result = Traverse.Create(__instance).Method("Combine", new PadState[] {__result, MousePad.GetState()}).GetValue<PadState>();
+        }
     }
 
     private static void postGetPressedPadState(JK.ControllerManager __instance, ref PadState __result) {
-        __result = Traverse.Create(__instance).Method("Combine", new PadState[] {__result, MousePad.GetPressed()}).GetValue<PadState>();
+        if (ModEntry.Prefs.isEnable) {
+            __result = Traverse.Create(__instance).Method("Combine", new PadState[] {__result, MousePad.GetPressed()}).GetValue<PadState>();
+        }
     }
 }

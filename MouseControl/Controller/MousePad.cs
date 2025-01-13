@@ -41,7 +41,7 @@ public static class MousePad
 	}
 	private static PadState GetPadState()
 	{
-		if (!ModEntry.Prefs.isEnable || steam_overlay_active || !Game1.instance.IsActive)
+		if (steam_overlay_active || !Game1.instance.IsActive)
 		{
 			return default;
 		}
@@ -114,12 +114,10 @@ public static class MousePad
 	}
 	public static PadState GetState()
 	{
-		if (!ModEntry.Prefs.isEnable) return default;
 		return currentState;
 	}
 	public static PadState GetPressed()
 	{
-		if (!ModEntry.Prefs.isEnable) return default;
 		PadState result = new PadState();
 		result.up = !lastState.up && currentState.up;
 		result.down = !lastState.down && currentState.down;

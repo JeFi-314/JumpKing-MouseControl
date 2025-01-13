@@ -1,4 +1,5 @@
 ﻿using JumpKing.PauseMenu.BT.Actions;
+using MouseControl.Controller;
 
 namespace MouseControl.Menu;
 public class ToggleControlDirection : ITextToggle

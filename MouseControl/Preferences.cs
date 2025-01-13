@@ -1,9 +1,5 @@
 ﻿using System.ComponentModel;
-using System.IO;
 using System.Runtime.CompilerServices;
-using JumpKing;
-using Microsoft.Xna.Framework.Input;
-using MouseControl.Controller;
 
 namespace MouseControl;
 public class Preferences : INotifyPropertyChanged
@@ -14,8 +10,6 @@ public class Preferences : INotifyPropertyChanged
         get => _enable;
         set
         {
-            CursorManager.SetVisible(value && isShowCursor);
-            CursorManager.SetClipCursor(value && isClipCursor);
             _enable = value;
             OnPropertyChanged();
         }
@@ -27,7 +21,6 @@ public class Preferences : INotifyPropertyChanged
         get => _showCursor;
         set
         {
-            CursorManager.SetVisible(value);
             _showCursor = value;
             OnPropertyChanged();
         }
@@ -39,7 +32,6 @@ public class Preferences : INotifyPropertyChanged
         get => _clipCursor;
         set
         {
-            CursorManager.SetClipCursor(value);
             _clipCursor = value;
             OnPropertyChanged();
         }
@@ -51,7 +43,6 @@ public class Preferences : INotifyPropertyChanged
         get => _RLControl;
         set
         {
-            if (!value) CursorManager.SetCursor("Normal");
             _RLControl = value;
             OnPropertyChanged();
         }
@@ -74,7 +65,6 @@ public class Preferences : INotifyPropertyChanged
         get => _cursorScale;
         set
         {
-            CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
             _cursorScale = value;
             OnPropertyChanged();
         }

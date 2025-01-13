@@ -133,20 +133,20 @@ public static class CursorManager
 
 		return resizedTexture;
 	}
-    public static void SetClipCursor(bool value)
+    public static void SetBoundCursor(bool value)
     {
         if (value && !isClipped) {
 			onWindowSizeChange(null, EventArgs.Empty);
 			Game1.instance.Window.ClientSizeChanged += onWindowSizeChange;
 			isClipped = true;
-			Debug.WriteLine($"[DEBUG] Cursor clipped)");
+			Debug.WriteLine($"[DEBUG] Cursor clipped");
         }
         else if (!value && isClipped)
         {
 			Cursor.Clip = System.Drawing.Rectangle.Empty;
 			Game1.instance.Window.ClientSizeChanged -= onWindowSizeChange;
 			isClipped = false;
-			Debug.WriteLine($"[DEBUG] Cursor unclipped)");
+			Debug.WriteLine($"[DEBUG] Cursor unclipped");
         }
     }
     public static void onWindowSizeChange(object sender, EventArgs e)
@@ -164,8 +164,8 @@ public static class CursorManager
     public static void onWindowFocusGained(object sender, EventArgs e)
     {
 		if (isClipped) {
-			SetClipCursor(false);
-			SetClipCursor(true);
+			SetBoundCursor(false);
+			SetBoundCursor(true);
 		}
     }
 }

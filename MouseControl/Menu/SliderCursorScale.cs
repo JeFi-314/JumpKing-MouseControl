@@ -5,6 +5,8 @@ using JumpKing;
 using JumpKing.PauseMenu.BT.Actions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.IO;
+using MouseControl.Controller;
 
 namespace MouseControl.Menu;
 public class SliderCursorScale : ISlider
@@ -37,6 +39,8 @@ public class SliderCursorScale : ISlider
     protected override void OnSliderChange(float p_value)
     {
         ModEntry.Prefs.CursorScale = Convert(p_value);
+        CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
+        CursorManager.SetCursor("Normal", force: true);
     }
 
     private int Convert(float p_value) {

@@ -7,7 +7,6 @@ using System.Reflection;
 
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
-using JumpKing.Controller;
 using MouseControl.Menu;
 using MouseControl.Controller;
 
@@ -48,9 +47,9 @@ public static class ModEntry
         Prefs.PropertyChanged += SaveSettingsOnFile;
         Prefs.SideRatio = Prefs.SideRatio;
 
+        CursorManager.SetVisible(Prefs.isEnable && Prefs.isShowCursor);
+		CursorManager.SetBoundCursor(Prefs.isEnable && Prefs.isClipCursor);
         CursorManager.TryLoadTexture(Path.Combine(AssemblyPath, IconsFolder));
-        CursorManager.SetVisible(ModEntry.Prefs.isEnable && ModEntry.Prefs.isShowCursor);
-		CursorManager.SetClipCursor(ModEntry.Prefs.isEnable && ModEntry.Prefs.isClipCursor);
 		CursorManager.SetCursor("Normal", force: true);
 
         Harmony harmony = new Harmony(HARMONY_IDENTIFIER);

@@ -5,7 +5,7 @@ using MouseControl.Controller;
 namespace MouseControl.Menu;
 public class ToggleMouseControl : ITextToggle
 {
-    public ToggleMouseControl() : base(ModEntry.Prefs.isEnable)
+    public ToggleMouseControl() : base(MouseControl.Prefs.isEnable)
     {
     }
 
@@ -13,11 +13,11 @@ public class ToggleMouseControl : ITextToggle
 
     protected override void OnToggle()
     {
-        ModEntry.Prefs.isEnable = toggle;
-        CursorManager.SetVisible(toggle && ModEntry.Prefs.isShowCursor);
-        CursorManager.SetBoundCursor(toggle && ModEntry.Prefs.isBoundCursor);
+        MouseControl.Prefs.isEnable = toggle;
+        CursorManager.SetVisible(toggle && MouseControl.Prefs.isShowCursor);
+        CursorManager.SetBoundCursor(toggle && MouseControl.Prefs.isBoundCursor);
         if (toggle) {
-            CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
+            CursorManager.TryLoadTexture(Path.Combine(MouseControl.AssemblyPath, MouseControl.IconsFolder));
         }
     }
 }

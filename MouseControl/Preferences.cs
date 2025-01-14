@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using MouseControl.Controller;
 
 namespace MouseControl;
 public class Preferences : INotifyPropertyChanged
@@ -66,6 +67,17 @@ public class Preferences : INotifyPropertyChanged
         set
         {
             _cursorScale = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private MouseBinding _mouseBinding = new MouseBinding();
+    public MouseBinding MouseBinding
+    {
+        get => _mouseBinding;
+        set
+        {
+            _mouseBinding = value;
             OnPropertyChanged();
         }
     }

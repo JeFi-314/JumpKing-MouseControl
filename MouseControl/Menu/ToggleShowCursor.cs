@@ -4,7 +4,7 @@ using MouseControl.Controller;
 namespace MouseControl.Menu;
 public class ToggleShowCursor : ITextToggle
 {
-    public ToggleShowCursor() : base(ModEntry.Prefs.isShowCursor)
+    public ToggleShowCursor() : base(MouseControl.Prefs.isShowCursor)
     {
     }
 
@@ -12,12 +12,12 @@ public class ToggleShowCursor : ITextToggle
 
     protected override void OnToggle()
     {
-        ModEntry.Prefs.isShowCursor = toggle;
+        MouseControl.Prefs.isShowCursor = toggle;
         CursorManager.SetVisible(toggle);
     }
 
     protected override bool CanChange()
     {
-        return ModEntry.Prefs.isEnable;
+        return MouseControl.Prefs.isEnable;
     }
 }

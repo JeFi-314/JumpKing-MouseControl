@@ -10,7 +10,7 @@ namespace MouseControl.Menu;
 public class SliderSideRatio : ISlider
 {
     const int steps = 16;
-    public SliderSideRatio() : base((ModEntry.Prefs.SideRatio-0.1f)/0.8f)
+    public SliderSideRatio() : base((MouseControl.Prefs.SideRatio-0.1f)/0.8f)
     {
         FieldInfo STEPS = AccessTools.Field(typeof(ISlider), "STEPS");
         STEPS.SetValue(this, steps);
@@ -36,6 +36,6 @@ public class SliderSideRatio : ISlider
 
     protected override void OnSliderChange(float p_value)
     {
-        ModEntry.Prefs.SideRatio = 0.1f+0.8f*p_value;
+        MouseControl.Prefs.SideRatio = 0.1f+0.8f*p_value;
     }
 }

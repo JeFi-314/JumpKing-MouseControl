@@ -3,9 +3,9 @@ namespace MouseControl.Controller;
 public enum MouseButtons
 {
 	None,
-	LeftButton,
-	MiddleButton,
-	RightButton,
-	XButton1,
-	XButton2,
+	Left,
+	Middle,
+	Right,
+	X1,
+	X2,
 }

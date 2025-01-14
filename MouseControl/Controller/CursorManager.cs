@@ -79,7 +79,7 @@ public static class CursorManager
 				{
 					Texture2D texture = contentManager.Load<Texture2D>(Path.Combine(folder, icon.Key));
 					Debug.WriteLine($"[DEBUG] Loaded texture \"{icon.Key}\": ({texture.Width},{texture.Height}), SurfaceFormat: {(int)texture.Format}");
-					texture = ResizeTexture(texture, ModEntry.Prefs.CursorScale);
+					texture = ResizeTexture(texture, MouseControl.Prefs.CursorScale);
 					int centerX = texture.Width / 2;
 					int centerY = texture.Height / 2;
 

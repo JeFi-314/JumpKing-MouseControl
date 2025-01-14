@@ -8,37 +8,31 @@ namespace MouseControl.Controller;
 
 public static class MousePad
 {
-	private static Binding binding;
+	public static MouseBinding Binding;
+	private static bool[] pressed;
 	private static PadState currentState;
 	private static PadState lastState;
-	private static bool[] pressed;
 	private static int lastWheelValue;
 	private static bool steam_overlay_active;
+
+	public static bool[] PressedButtons
+	{
+		get => pressed;
+		set => pressed = value;
+	}
 
 	static MousePad() {
 		RegisterSteamCallback();
 		lastWheelValue = Mouse.GetState().ScrollWheelValue;
 		pressed = new bool[6];
 		currentState = lastState = default;
-		binding = GetDefaultBind();
+		Binding = new MouseBinding();
 	}
 	public static string ButtonToString(MouseButtons p_button)
 	{
 		return p_button.ToString();
 	}
-	public static Binding GetDefaultBind()
-	{
-		return new Binding {
-			walk = MouseButtons.RightButton,
-			jump = MouseButtons.LeftButton,
-			pause = MouseButtons.MiddleButton,
-			confirm = MouseButtons.LeftButton,
-			cancel = MouseButtons.RightButton,
-			snake = MouseButtons.XButton1,
-			boots = MouseButtons.XButton2,
-			restart = MouseButtons.None,
-		};
-	}
+
 	private static PadState GetPadState()
 	{
 		if (steam_overlay_active || !Game1.instance.IsActive)
@@ -58,18 +52,18 @@ public static class MousePad
 		if (mouse.ScrollWheelValue>lastWheelValue) result.up = true;
 		else if (mouse.ScrollWheelValue<lastWheelValue) result.down = true;
 		lastWheelValue = mouse.ScrollWheelValue;
-		if (pressed[(int)binding.jump]) result.jump = true;
-		if (pressed[(int)binding.pause]) result.pause = true;
-		if (pressed[(int)binding.confirm]) result.confirm = true;
-		if (pressed[(int)binding.cancel]) result.cancel = true;
-		if (pressed[(int)binding.boots]) result.boots = true;
-		if (pressed[(int)binding.snake]) result.snake = true;
-		if (pressed[(int)binding.restart]) result.restart = true;
+		if (pressed[(int)Binding.Jump]) result.jump = true;
+		if (pressed[(int)Binding.Pause]) result.pause = true;
+		if (pressed[(int)Binding.Confirm]) result.confirm = true;
+		if (pressed[(int)Binding.Cancel]) result.cancel = true;
+		if (pressed[(int)Binding.Boots]) result.boots = true;
+		if (pressed[(int)Binding.Snake]) result.snake = true;
+		if (pressed[(int)Binding.Restart]) result.restart = true;
 
 		Rectangle gameRect = Game1.instance.GetGameRect();
-		int leftBound = gameRect.X+(int)(gameRect.Width*ModEntry.Prefs.SideRatio/2);
-		int rightBound = gameRect.X+(int)(gameRect.Width*(1-ModEntry.Prefs.SideRatio/2));
-		if (ModEntry.Prefs.isRLControl) {
+		int leftBound = gameRect.X+(int)(gameRect.Width*MouseControl.Prefs.SideRatio/2);
+		int rightBound = gameRect.X+(int)(gameRect.Width*(1-MouseControl.Prefs.SideRatio/2));
+		if (MouseControl.Prefs.isRLControl) {
 			if (result.jump) {
 				if (mouse.X<=leftBound) {
 					result.left = true;
@@ -80,7 +74,7 @@ public static class MousePad
 					result.right = true;
 					CursorManager.SetCursor("RightJump");
 				}
-			} else if (pressed[(int)binding.walk]) {
+			} else if (pressed[(int)Binding.Walk]) {
 				if (mouse.X<=leftBound) {
 					result.left = true;
 					CursorManager.SetCursor("LeftWalk");

@@ -4,15 +4,16 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-
 using JumpKing.Mods;
 using JumpKing.PauseMenu;
 using MouseControl.Menu;
+using MouseControl.Nodes;
 using MouseControl.Controller;
+using JumpKing.PauseMenu.BT;
 
 namespace MouseControl;
 [JumpKingMod(IDENTIFIER)]
-public static class ModEntry
+public static class MouseControl
 {
     const string IDENTIFIER = "JeFi.MouseControl";
     const string HARMONY_IDENTIFIER = "JeFi.MouseControl.Harmony";
@@ -51,6 +52,7 @@ public static class ModEntry
 		CursorManager.SetBoundCursor(Prefs.isEnable && Prefs.isBoundCursor);
         CursorManager.TryLoadTexture(Path.Combine(AssemblyPath, IconsFolder));
 		CursorManager.SetCursor("Normal", force: true);
+        MousePad.Binding = Prefs.MouseBinding;
 
         Harmony harmony = new Harmony(HARMONY_IDENTIFIER);
 
@@ -84,6 +86,13 @@ public static class ModEntry
         return new ToggleMouseControl();
     }
 
+    [PauseMenuItemSetting]
+    [MainMenuItemSetting]
+    public static TextButton BindSettings(object factory, GuiFormat format)
+    {
+        return new TextButton("Bind Keys", new MenuBindControls(factory));
+    }
+
     [MainMenuItemSetting]
     [PauseMenuItemSetting]
     public static ToggleShowCursor ToggleShowCursor(object factory, GuiFormat format)
@@ -98,14 +107,14 @@ public static class ModEntry
         return new ToggleBoundCursor();
     }
 
-    [MainMenuItemSetting]
+    // [MainMenuItemSetting]
     [PauseMenuItemSetting]
     public static ToggleControlDirection ToggleControlDirection(object factory, GuiFormat format)
     {
         return new ToggleControlDirection();
     }
 
-    [MainMenuItemSetting]
+    // [MainMenuItemSetting]
     [PauseMenuItemSetting]
     public static SliderSideRatio SliderSideRatio(object factory, GuiFormat format)
     {

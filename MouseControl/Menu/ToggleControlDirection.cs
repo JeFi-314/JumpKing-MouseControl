@@ -4,7 +4,7 @@ using MouseControl.Controller;
 namespace MouseControl.Menu;
 public class ToggleControlDirection : ITextToggle
 {
-    public ToggleControlDirection() : base(ModEntry.Prefs.isRLControl)
+    public ToggleControlDirection() : base(MouseControl.Prefs.isRLControl)
     {
     }
 
@@ -12,11 +12,11 @@ public class ToggleControlDirection : ITextToggle
 
     protected override void OnToggle()
     {
-        ModEntry.Prefs.isRLControl = toggle;
+        MouseControl.Prefs.isRLControl = toggle;
     }
 
     protected override bool CanChange()
     {
-        return ModEntry.Prefs.isEnable;
+        return MouseControl.Prefs.isEnable;
     }
 }

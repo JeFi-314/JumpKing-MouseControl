@@ -4,7 +4,7 @@ using MouseControl.Controller;
 namespace MouseControl.Menu;
 public class ToggleBoundCursor : ITextToggle
 {
-    public ToggleBoundCursor() : base(ModEntry.Prefs.isBoundCursor)
+    public ToggleBoundCursor() : base(MouseControl.Prefs.isBoundCursor)
     {
     }
 
@@ -12,12 +12,12 @@ public class ToggleBoundCursor : ITextToggle
 
     protected override void OnToggle()
     {
-        ModEntry.Prefs.isBoundCursor = toggle;
+        MouseControl.Prefs.isBoundCursor = toggle;
         CursorManager.SetBoundCursor(toggle);
     }
 
     protected override bool CanChange()
     {
-        return ModEntry.Prefs.isEnable;
+        return MouseControl.Prefs.isEnable;
     }
 }

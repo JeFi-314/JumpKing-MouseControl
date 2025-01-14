@@ -12,7 +12,7 @@ namespace MouseControl.Menu;
 public class SliderCursorScale : ISlider
 {
     const int steps = 9;
-    public SliderCursorScale() : base((ModEntry.Prefs.CursorScale-1)/9f)
+    public SliderCursorScale() : base((MouseControl.Prefs.CursorScale-1)/9f)
     {
         FieldInfo STEPS = AccessTools.Field(typeof(ISlider), "STEPS");
         STEPS.SetValue(this, steps);
@@ -38,8 +38,8 @@ public class SliderCursorScale : ISlider
 
     protected override void OnSliderChange(float p_value)
     {
-        ModEntry.Prefs.CursorScale = Convert(p_value);
-        CursorManager.TryLoadTexture(Path.Combine(ModEntry.AssemblyPath, ModEntry.IconsFolder));
+        MouseControl.Prefs.CursorScale = Convert(p_value);
+        CursorManager.TryLoadTexture(Path.Combine(MouseControl.AssemblyPath, MouseControl.IconsFolder));
         CursorManager.SetCursor("Normal", force: true);
     }
 

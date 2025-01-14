@@ -65,12 +65,17 @@
 			<SpecificVersion>False</SpecificVersion>
 			<HintPath>C:\Program Files (x86)\steam\steamapps\common\Jump King\Steamworks.NET.dll</HintPath>
 		</Reference>
+		<Reference Include="LanguageJK">
+			<HintPath>C:\Program Files (x86)\Steam\steamapps\common\Jump King\LanguageJK.dll</HintPath>
+			<Private>False</Private>
+		</Reference>
 	</ItemGroup>
 	<ItemGroup>
 		<Compile Include="*.cs" />
-		<Compile Include="Patching\*.cs" />
-		<Compile Include="Menu\*.cs" />
 		<Compile Include="Controller\*.cs" />
+		<Compile Include="Menu\*.cs" />
+		<Compile Include="Nodes\*.cs" />
+		<Compile Include="Patching\*.cs" />
 		<Compile Include="Properties\AssemblyInfo.cs" />
 	</ItemGroup>
 	<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

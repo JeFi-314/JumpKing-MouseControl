@@ -46,13 +46,13 @@ public class MenuBindControls : BTsequencor
 
         // right
         DisplayFrame displayFrame = new DisplayFrame(gui_right, BTresult.Running);
-        displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Walk)));
         displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Jump)));
-        displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Pause)));
         displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Confirm)));
+        displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Walk)));
         displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Cancel)));
-        displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Boots)));
+        displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Pause)));
         displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Snake)));
+        displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Boots)));
         displayFrame.AddChild<DisplayMouseBind>(new DisplayMouseBind(nameof(binding.Restart)));
         displayFrame.Initialize();
 
@@ -92,13 +92,13 @@ public class MenuBindControls : BTsequencor
 
         BTsequencor btsequencor2 = new BTsequencor();
         btsequencor2.AddChild(new WaitUntilNoMenuInput());
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Walk), p_format));
         btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Jump), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Pause), p_format));
         btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Confirm), p_format));
+        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Walk), p_format));
         btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Cancel), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Boots), p_format));
+        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Pause), p_format));
         btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Snake), p_format));
+        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Boots), p_format));
         btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Restart), p_format));
         btsequencor2.AddChild(new WaitUntilNoInputAll());
         btsequencor2.AddChild(menuSelector);

@@ -22,19 +22,19 @@ public class BindMouseButton : IBTnode
     {
         BTresult result = BTresult.Running;
         for (int i=1; i<lastPressed.Length; i++) {
-            if (result == BTresult.Success || MousePad.PressedButtons[i] && !LastPressed[i]) {
+            if (result == BTresult.Running && MousePad.PressedButtons[i] && !LastPressed[i]) {
                 MousePad.Binding.SaveButton(bindName, (MouseButtons)i);
                 SaveTextButton.SetNotifer(true);
                 result = BTresult.Success;
 #if DEBUG
                 Debug.WriteLine($"[DEBUG] Binded '{bindName}' with {(MouseButtons)i}!");
 #endif
-                break;
             }
             lastPressed[i] = MousePad.PressedButtons[i];
         }
         if (result == BTresult.Running && MenuController.instance.GetPadState().ToArray().Contains(value: true)) {
             MousePad.Binding.SaveButton(bindName, MouseButtons.None);
+            MenuController.instance.ConsumePadPresses();
             SaveTextButton.SetNotifer(true);
             result = BTresult.Success;
 #if DEBUG

@@ -1,6 +1,4 @@
 using BehaviorTree;
-using EntityComponent;
-using EntityComponent.BT;
 using HarmonyLib;
 using IDrawable = JumpKing.Util.IDrawable;
 using JumpKing;
@@ -9,12 +7,10 @@ using JumpKing.PauseMenu.BT;
 using JumpKing.PauseMenu.BT.Actions;
 using JumpKing.PauseMenu.BT.Actions.BindController;
 using JumpKing.Util;
-using LanguageJK;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using MouseControl.Controller;
-using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace MouseControl.Nodes;
 public class MenuBindControls : BTsequencor
@@ -74,37 +70,37 @@ public class MenuBindControls : BTsequencor
         };
 
         MenuSelector menuSelector = new MenuSelector(p_format);
-        menuSelector.AllowEscape = false;
-        BindMouseDefault p_child2 = new BindMouseDefault();
-        MenuSelectorBack p_child3 = new MenuSelectorBack(menuSelector);
+        MenuFactoryDrawables.Add(menuSelector);
+
         BTsequencor btsequencor = new BTsequencor();
-        btsequencor.AddChild(p_child2);
-        btsequencor.AddChild(p_child3);
-        TimerAction timerAction = new TimerAction(language.MENUFACTORY_REVERTS_IN, 5, Color.Gray, btsequencor);
-        menuSelector.AddChild<TextInfo>(new TextInfo(language.MENUFACTORY_KEEPCHANGES, Color.Gray));
+        btsequencor.AddChild(new BTevaluator(new WaitUntilNoInputAll(), new WaitUntilNoInputMouse()));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Jump), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Confirm), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Walk), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Cancel), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Pause), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Snake), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Boots), p_format));
+        btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Restart), p_format));
+        btsequencor.AddChild(new BTevaluator(new WaitUntilNoInputAll(), new WaitUntilNoInputMouse()));
+        btsequencor.AddChild(menuSelector);
+
+        menuSelector.AllowEscape = false;
+        BindMouseDefault bindMouseDefault = new BindMouseDefault();
+        MenuSelectorBack menuSelectorBack = new MenuSelectorBack(menuSelector);
+        BTsequencor btsequencor2 = new BTsequencor();
+        btsequencor2.AddChild(bindMouseDefault);
+        btsequencor2.AddChild(menuSelectorBack);
+        menuSelector.AddChild<TextInfo>(new TextInfo("Keep changes?", Color.Gray));
+        TimerAction timerAction = new TimerAction("Resets in <number>", 5, Color.Gray, btsequencor2);
         menuSelector.AddChild<TimerAction>(timerAction);
-        menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_NO, btsequencor));
-        menuSelector.AddChild<TextButton>(new TextButton(language.MENUFACTORY_YES, p_child3));
+        menuSelector.AddChild<TextButton>(new TextButton("No", btsequencor2));
+        menuSelector.AddChild<TextButton>(new TextButton("Yes", menuSelectorBack));
         menuSelector.SetNodeForceRun(timerAction);
         menuSelector.Initialize(false);
 
-        MenuFactoryDrawables.Add(menuSelector);
-
-        BTsequencor btsequencor2 = new BTsequencor();
-        btsequencor2.AddChild(new WaitUntilNoMenuInput());
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Jump), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Confirm), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Walk), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Cancel), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Pause), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Snake), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Boots), p_format));
-        btsequencor2.AddChild(MakeBindButtonMenu(nameof(binding.Restart), p_format));
-        btsequencor2.AddChild(new WaitUntilNoInputAll());
-        btsequencor2.AddChild(menuSelector);
-
         BTselector btselector = new BTselector();
-        btselector.AddChild(btsequencor2);
+        btselector.AddChild(btsequencor);
         btselector.AddChild(new PlaySFX(Game1.instance.contentManager.audio.menu.MenuFail));
         return btselector;
     }
@@ -112,10 +108,10 @@ public class MenuBindControls : BTsequencor
     private static BindButtonFrame MakeBindButtonMenu(string p_button, GuiFormat p_format)
     {
         BTsequencor btsequencor = new BTsequencor();
-        btsequencor.AddChild(new WaitUntilNoInputAll());
+        btsequencor.AddChild(new BTevaluator(new WaitUntilNoInputAll(), new WaitUntilNoInputMouse()));
         btsequencor.AddChild(new BindMouseButton(p_button));
         BindButtonFrame bindButtonFrame = new BindButtonFrame(p_format, btsequencor);
-        bindButtonFrame.AddChild<TextButton>(new TextButton(Util.ParseString("Press <string>", p_button), btsequencor));
+        bindButtonFrame.AddChild<TextButton>(new TextButton($"Press {p_button}", btsequencor));
         bindButtonFrame.Initialize();
 
         MenuFactoryDrawables.Add(bindButtonFrame);

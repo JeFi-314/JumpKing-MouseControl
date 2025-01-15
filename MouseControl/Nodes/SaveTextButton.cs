@@ -8,9 +8,8 @@ public class SaveTextButton : TextButton
     private static bool notify = false;
     private static SaveTextButton _instance;
     public SaveTextButton(IBTnode p_child, SpriteFont p_font)
-        : base("Save", p_child, p_font)
+        : base("Save"+(notify ? "*" : ""), p_child, p_font)
     {
-        if (_instance != null) return;
         _instance = this;
     }
 

@@ -1,6 +1,7 @@
 ﻿using BehaviorTree;
 using JumpKing.Controller;
 using MouseControl.Controller;
+using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -21,7 +22,7 @@ public class BindMouseButton : IBTnode
     protected override BTresult MyRun(TickData p_data)
     {
         BTresult result = BTresult.Running;
-        for (int i=1; i<lastPressed.Length; i++) {
+        foreach (int i in Enum.GetValues(typeof(MouseButtons))) {
             if (result == BTresult.Running && MousePad.PressedButtons[i] && !LastPressed[i]) {
                 MousePad.Binding.SaveButton(bindName, (MouseButtons)i);
                 SaveTextButton.SetNotifer(true);

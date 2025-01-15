@@ -1,4 +1,5 @@
 ﻿using BehaviorTree;
+using HarmonyLib;
 using JumpKing.PauseMenu.BT;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,12 +15,13 @@ public class SaveTextButton : TextButton
     }
 
     public static void SetNotifer(bool value) {
+        var m_text = Traverse.Create(_instance).Field<string>("m_text");
         if (value && !notify) {
-            _instance.Text = _instance.Text + "*";
+            m_text.Value = m_text.Value + "*";
             notify = true;
         }
         else if (!value && notify) {
-            _instance.Text = _instance.Text.Substring(0, _instance.Text.Length-1);
+            m_text.Value = m_text.Value.Substring(0, m_text.Value.Length-1);
             notify = false;
         }
     }

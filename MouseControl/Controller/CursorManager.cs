@@ -52,16 +52,6 @@ public static class CursorManager
 		}
 		return false;
 	}
-	public static void AddTexture(string name, Texture2D texture, int x, int y) {
-		CustomIcons[name] = MouseCursor.FromTexture2D(
-			texture: texture,
-			originx: x,
-			originy: y
-		);
-	}
-	public static bool RemoveTexture(string name) {
-		return CustomIcons.Remove(name);
-	}
 	public static void TryLoadTexture(string folder) {
 		if (!Directory.Exists(folder)) {
 			Debug.WriteLine($"[DEBUG] Folder not found: {folder}");
@@ -96,7 +86,7 @@ public static class CursorManager
 			}
 		}
 	}
-	public static Texture2D ResizeTexture(Texture2D original, int scale)
+	private static Texture2D ResizeTexture(Texture2D original, int scale)
 	{
 		if (scale <= 0 || scale >10)
 			throw new ArgumentException("Scale must be 1~10.");
@@ -115,7 +105,7 @@ public static class CursorManager
 		{
 			for (int x = 0; x < original.Width; x++)
 			{
-				Color originalColor = originalData[y * original.Width + x];
+				Color fixedColor = FixRGB(originalData[y * original.Width + x]);
 
 				for (int dy = 0; dy < scale; dy++)
 				{
@@ -123,7 +113,7 @@ public static class CursorManager
 					{
 						int newX = x * scale + dx;
 						int newY = y * scale + dy;
-						resizedData[newY * newWidth + newX] = originalColor;
+						resizedData[newY * newWidth + newX] = fixedColor;
 					}
 				}
 			}
@@ -133,6 +123,25 @@ public static class CursorManager
 
 		return resizedTexture;
 	}
+	// MouseCursor.FromTexture2D use other order on rgb data from Color (RGBA > BGRA)
+	private static Color FixRGB(Color origin) {
+		byte R = origin.R;
+		origin.R = origin.B;
+		origin.B = R;
+		return origin;
+	}
+	
+	public static void AddTexture(string name, Texture2D texture, int x, int y) {
+		CustomIcons[name] = MouseCursor.FromTexture2D(
+			texture: texture,
+			originx: x,
+			originy: y
+		);
+	}
+	public static bool RemoveTexture(string name) {
+		return CustomIcons.Remove(name);
+	}
+
     public static void SetBoundCursor(bool value)
     {
         if (value && !isClipped) {

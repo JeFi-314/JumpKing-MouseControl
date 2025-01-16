@@ -88,9 +88,9 @@ public static class MouseControl
 
     [PauseMenuItemSetting]
     [MainMenuItemSetting]
-    public static TextButton BindSettings(object factory, GuiFormat format)
+    public static TextButton BindControls(object factory, GuiFormat format)
     {
-        return new TextButton("Bind Keys", new MenuBindControls(factory));
+        return new TextButton("Controls", new MenuBindControls(factory));
     }
 
     [MainMenuItemSetting]

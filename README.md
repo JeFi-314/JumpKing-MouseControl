@@ -2,6 +2,8 @@
 
 This mod lets you control Jump King with a mouse, offering options for input bindings, cursor icons, and movement settings.
 
+You can find it on [Steam Workshop Page](https://steamcommunity.com/sharedfiles/filedetails/?id=3407882062).
+
 ---
 
 ## Basic Movement

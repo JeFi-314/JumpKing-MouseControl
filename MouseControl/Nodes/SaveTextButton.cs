@@ -1,9 +1,11 @@
-﻿using BehaviorTree;
+﻿using System;
+using BehaviorTree;
 using HarmonyLib;
 using JumpKing.PauseMenu.BT;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace MouseControl.Nodes;
+[Obsolete("Don't know why doesn't work on workshop so deprecated.")]
 public class SaveTextButton : TextButton
 {
     private static bool notify = false;

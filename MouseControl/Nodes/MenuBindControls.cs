@@ -36,7 +36,7 @@ public class MenuBindControls : BTsequencor
         int frameIndex = MenuFactoryDrawables.Count;
         menuSelector.AddChild<TextButton>(new TextButton("Bind buttons", MakeBindMouse(), menuFontSmall));
         menuSelector.AddChild<TextButton>(new TextButton("Default", new BindMouseDefault(), menuFontSmall));
-        menuSelector.AddChild<SaveTextButton>(new SaveTextButton(new SaveMouseBind(), menuFontSmall));
+        menuSelector.AddChild<TextButton>(new TextButton("Save", new SaveMouseBind(), menuFontSmall));
         menuSelector.Initialize(true);
         menuSelector.GetBounds();
 

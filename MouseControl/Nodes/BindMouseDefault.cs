@@ -11,7 +11,7 @@ internal class BindMouseDefault : IBTnode
     protected override BTresult MyRun(TickData p_data)
     {
         MousePad.Binding = new MouseBinding();
-        SaveTextButton.SetNotifer(true);
+        // SaveTextButton.SetNotifer(true);
         return BTresult.Success;
     }
 }

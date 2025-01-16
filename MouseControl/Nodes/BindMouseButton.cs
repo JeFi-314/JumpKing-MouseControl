@@ -25,7 +25,7 @@ public class BindMouseButton : IBTnode
         foreach (int i in Enum.GetValues(typeof(MouseButtons))) {
             if (result == BTresult.Running && MousePad.PressedButtons[i] && !LastPressed[i]) {
                 MousePad.Binding.SaveButton(bindName, (MouseButtons)i);
-                SaveTextButton.SetNotifer(true);
+                // SaveTextButton.SetNotifer(true);
                 result = BTresult.Success;
 #if DEBUG
                 Debug.WriteLine($"[DEBUG] Binded '{bindName}' with {(MouseButtons)i}!");
@@ -36,7 +36,7 @@ public class BindMouseButton : IBTnode
         if (result == BTresult.Running && MenuController.instance.GetPadState().ToArray().Contains(value: true)) {
             MousePad.Binding.SaveButton(bindName, MouseButtons.None);
             MenuController.instance.ConsumePadPresses();
-            SaveTextButton.SetNotifer(true);
+            // SaveTextButton.SetNotifer(true);
             result = BTresult.Success;
 #if DEBUG
             Debug.WriteLine($"[DEBUG] Binded '{bindName}' with {MouseButtons.None}!");

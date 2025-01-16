@@ -27,7 +27,7 @@ As with other device controls for Jump King, you can use mouse buttons to perfor
 - **Show Cursor**: Show or hide the cursor icon.
 - **Bound Cursor**: Restrict the cursor to the game window (Alt+Tab to switch windows if enabled).
 - **R/L Control**: Enable to trigger Left/Right inputs by pressing jump or walk buttons in the side area. Cursor icons update to indicate active R/L control.
-- **Side Area**: Adjust the percentage of side areas used for Left/Right control. Black areas always count as side areas.
+- **Side Area**: Adjust the percentage of side areas used for Left/Right control. The black areas on both sides always count as side areas.
 - **Resize**: Resize custom cursors from x1 to x10.
 
 ---

@@ -73,7 +73,6 @@ public class MenuBindControls : BTsequencor
         MenuFactoryDrawables.Add(menuSelector);
 
         BTsequencor btsequencor = new BTsequencor();
-        btsequencor.AddChild(new BTevaluator(new WaitUntilNoInputAll(), new WaitUntilNoInputMouse()));
         btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Jump), p_format));
         btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Confirm), p_format));
         btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Walk), p_format));
@@ -82,7 +81,7 @@ public class MenuBindControls : BTsequencor
         btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Snake), p_format));
         btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Boots), p_format));
         btsequencor.AddChild(MakeBindButtonMenu(nameof(binding.Restart), p_format));
-        btsequencor.AddChild(new BTevaluator(new WaitUntilNoInputAll(), new WaitUntilNoInputMouse()));
+        btsequencor.AddChild(new WaitUntilNoInputAllMouse());
         btsequencor.AddChild(menuSelector);
 
         menuSelector.AllowEscape = false;
@@ -108,7 +107,7 @@ public class MenuBindControls : BTsequencor
     private static BindButtonFrame MakeBindButtonMenu(string p_button, GuiFormat p_format)
     {
         BTsequencor btsequencor = new BTsequencor();
-        btsequencor.AddChild(new BTevaluator(new WaitUntilNoInputAll(), new WaitUntilNoInputMouse()));
+        btsequencor.AddChild(new WaitUntilNoInputAllMouse());
         btsequencor.AddChild(new BindMouseButton(p_button));
         BindButtonFrame bindButtonFrame = new BindButtonFrame(p_format, btsequencor);
         bindButtonFrame.AddChild<TextButton>(new TextButton($"Press {p_button}", btsequencor));

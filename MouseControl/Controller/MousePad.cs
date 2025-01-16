@@ -3,6 +3,7 @@ using JumpKing.Controller;
 using JumpKing;
 using Steamworks;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 namespace MouseControl.Controller;
 
@@ -41,6 +42,8 @@ public static class MousePad
 		}
 		MouseState mouse = Mouse.GetState();
 
+		// It is possible that click left & right at same time will stuck both buttons
+		// looks like xna bug or device issue
 		pressed[0] = false;
 		pressed[1] = mouse.LeftButton == ButtonState.Pressed;
 		pressed[2] = mouse.MiddleButton == ButtonState.Pressed;
